@@ -5,7 +5,6 @@ Soy un Lic. en Negocio y Comercio Internacional apasionado por la optimización 
 ¡He creado una versión interactiva de mi currículum para que puedas conocer mejor mi trayectoria y habilidades!
 
 
-(Reemplaza la URL de placehold.co con una captura de pantalla real de tu CV)
 
 ➡️ Haz clic aquí para ver mi CV Interactivo en vivo
 
