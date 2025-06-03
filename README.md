@@ -317,7 +317,7 @@
                 labels: ['Análisis de Datos (SQL, Vs Code)', 'Liderazgo de Equipos', 'Optimización Logística', 'Negociación Avanzada', 'Planificación Estratégica', 'Gestión Financiera'],
                 datasets: [{
                     label: 'Nivel de Competencia',
-                    data: [90, 85, 95, 88, 80, 82],
+                    data: [90, 85, 95, 88, 82, 86],
                     backgroundColor: 'rgba(0, 123, 255, 0.6)',
                     borderColor: 'rgba(0, 123, 255, 1)',
                     borderWidth: 1,
