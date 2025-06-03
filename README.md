@@ -229,7 +229,7 @@
     <footer class="bg-gray-800 text-white">
         <div class="container mx-auto px-6 py-12 text-center">
              <h3 class="text-2xl font-bold mb-4">Contacto</h3>
-             <p class="mb-2 text-gray-300">Email: <a href="mailto:mitreorliz@omall.com" class="hover:text-blue-400">mitreorliz@omall.com</a></p>
+             <p class="mb-2 text-gray-300">Email: <a href="mailto:mitreorliz@omall.com" class="hover:text-blue-400">mitreortiz@gmail.com</a></p>
              <p class="mb-6 text-gray-300">Teléfono: 667-220-5517</p>
              <a href="https://www.linkedin.com/in/mitreortiz/" target="_blank" class="bg-blue-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-blue-700 transition-all duration-300 transform hover:scale-105">
                 Conectar en LinkedIn
