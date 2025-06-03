@@ -93,14 +93,14 @@
         <section id="perfil" class="text-center py-16 md:py-24">
             <h2 class="text-4xl md:text-5xl font-bold mb-4 text-gray-900">Lic. en Negocio y Comercio Internacional</h2>
             <p class="max-w-3xl mx-auto text-lg text-gray-600">
-                Esta sección introduce mi perfil profesional. Soy un profesional dinámico y orientado a resultados con sólida experiencia en operaciones, coordinación comercial y administración. Me especializo en la optimización de procesos logísticos y el análisis de datos para la toma de decisiones estratégicas, buscando siempre contribuir al crecimiento y la eficiencia de las organizaciones.
+                Soy un profesional dinámico y orientado a resultados con sólida experiencia en operaciones, coordinación comercial y administración. Me especializo en la optimización de procesos logísticos y el análisis de datos para la toma de decisiones estratégicas, buscando siempre contribuir al crecimiento y la eficiencia de las organizaciones.
             </p>
         </section>
 
         <section id="trayectoria" class="py-16 md:py-24">
             <div class="text-center mb-12">
                 <h3 class="text-3xl font-bold mb-2">Trayectoria Profesional</h3>
-                <p class="text-gray-600 max-w-2xl mx-auto">Aquí puedes explorar mi carrera de forma interactiva. Mi experiencia abarca desde la administración y las finanzas hasta la coordinación comercial y, más recientemente, el análisis de operaciones. Haz clic en cada puesto en la línea de tiempo para ver los detalles, responsabilidades y logros clave en cada etapa.</p>
+                <p class="text-gray-600 max-w-2xl mx-auto">Mi experiencia abarca desde la administración y las finanzas hasta la coordinación comercial y, más recientemente, el análisis de operaciones. Haz clic en cada puesto en la línea de tiempo para ver los detalles, responsabilidades y logros clave en cada etapa.</p>
             </div>
             <div class="md:grid md:grid-cols-3 md:gap-12">
                 <div class="col-span-1 mb-8 md:mb-0">
@@ -170,7 +170,7 @@
             <div class="container mx-auto px-6">
                 <div class="text-center mb-12">
                     <h3 class="text-3xl font-bold mb-2">Habilidades Clave</h3>
-                    <p class="text-gray-600 max-w-2xl mx-auto">Esta sección visualiza mis competencias. A la izquierda, se presentan mis habilidades profesionales clave, que fundamentan mi enfoque estratégico. A la derecha, un gráfico de barras interactivo muestra mi nivel de dominio en herramientas y áreas técnicas específicas. Pasa el cursor sobre las barras para ver más detalles.</p>
+                    <p class="text-gray-600 max-w-2xl mx-auto">A la izquierda, se presentan mis habilidades profesionales clave, que fundamentan mi enfoque estratégico. A la derecha, un gráfico de barras interactivo muestra mi nivel de dominio en herramientas y áreas técnicas específicas. Pasa el cursor sobre las barras para ver más detalles.</p>
                 </div>
                 <div class="grid md:grid-cols-2 gap-12 items-center">
                     <div class="flex flex-col items-center">
