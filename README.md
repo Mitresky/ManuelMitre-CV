@@ -19,7 +19,7 @@ Mis habilidades clave (¡con una gráfica interactiva!)
 Mi formación académica y cursos relevantes
 
 Para ejecutar el código localmente (si deseas):
-Clona este repositorio: git clone https://github.com/tu-usuario/nombre-del-repositorio.git
+
 
 Abre el archivo index.html en tu navegador web.
 
