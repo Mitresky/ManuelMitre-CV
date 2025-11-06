@@ -1,309 +1,408 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive CV - Manuel Mitre</title>
+    <title>Infografía: Plan de Rescate MITRECONECT</title>
+    <base href="/"> 
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
-    <!-- Chosen Palette: Warm Neutrals -->
-    <!-- Application Structure Plan: A single-page application with a top navigation bar for smooth scrolling to thematic sections: Home, Experience, Skills/Education, and Contact. The experience section is an interactive vertical timeline where users can click to expand job details. This structure is intuitive for recruiters, allowing for quick scanning and deep dives into specific areas, making the content more engaging and digestible than a static document. -->
-    <!-- Visualization & Content Choices: 
-        1. Report Info: Skills (Competencias). Goal: Inform/Compare. Viz: Radar Chart (Chart.js/Canvas). Interaction: Hover to see skill names. Justification: Provides a dynamic and quick visual summary of core competencies, more engaging than a list.
-        2. Report Info: Work Experience. Goal: Organize/Show Change. Viz: Interactive Vertical Timeline (HTML/CSS/JS). Interaction: Click job title to toggle visibility of details. Justification: Cleans up the layout and allows users to focus on specific roles, highlighting career progression effectively.
-        3. Report Info: Education/Courses. Goal: Inform. Viz: Styled List (HTML/Tailwind). Interaction: None. Justification: Clear and straightforward presentation for factual information.
-    -->
-    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Inter', sans-serif;
+            background-color: #F3F4F6;
+            color: #1F2937;
         }
         .chart-container {
             position: relative;
             width: 100%;
-            max-width: 500px;
+            max-width: 600px;
             margin-left: auto;
             margin-right: auto;
-            height: 400px;
-            max-height: 50vh;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .timeline-line {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            top: 20px;
+            bottom: 20px;
+            width: 4px;
+            background-color: #A9D0DE;
+            border-radius: 2px;
+        }
+        .timeline-item {
+            position: relative;
+            width: 100%;
+            padding-left: 0;
+            padding-right: 0;
+            margin-bottom: 50px;
+        }
+        .timeline-content {
+            position: relative;
+            width: calc(50% - 40px);
+            background: white;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border-top: 4px solid #4771B2;
+        }
+        .timeline-item:nth-child(odd) .timeline-content {
+            float: left;
+            text-align: right;
+        }
+        .timeline-item:nth-child(even) .timeline-content {
+            float: right;
+            text-align: left;
+        }
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: white;
+            border: 4px solid #00429D;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+        }
+        .timeline-item::before {
+            content: "";
+            display: table;
+            clear: both;
         }
     </style>
 </head>
-<body class="bg-neutral-50 text-neutral-800">
+<body class="bg-gray-100">
 
-    <header class="bg-white/80 backdrop-blur-sm sticky top-0 z-50 shadow-sm">
-        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="#home" class="text-xl font-bold text-neutral-800">Manuel Mitre</a>
-            <div class="hidden md:flex space-x-8">
-                <a href="#experience" class="text-neutral-600 hover:text-blue-600 transition-colors">Experience</a>
-                <a href="#skills" class="text-neutral-600 hover:text-blue-600 transition-colors">Skills</a>
-                <a href="#education" class="text-neutral-600 hover:text-blue-600 transition-colors">Education</a>
-                <a href="#contact" class="text-neutral-600 hover:text-blue-600 transition-colors">Contact</a>
-            </div>
-            <button id="mobile-menu-button" class="md:hidden text-neutral-600 focus:outline-none">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
-            </button>
-        </nav>
-        <div id="mobile-menu" class="hidden md:hidden bg-white">
-            <a href="#experience" class="block text-center py-2 px-4 text-sm text-neutral-600 hover:bg-neutral-100">Experience</a>
-            <a href="#skills" class="block text-center py-2 px-4 text-sm text-neutral-600 hover:bg-neutral-100">Skills</a>
-            <a href="#education" class="block text-center py-2 px-4 text-sm text-neutral-600 hover:bg-neutral-100">Education</a>
-            <a href="#contact" class="block text-center py-2 px-4 text-sm text-neutral-600 hover:bg-neutral-100">Contact</a>
-        </div>
-    </header>
+    <div class="container mx-auto p-4 md:p-8 max-w-7xl">
 
-    <main>
-        <section id="home" class="min-h-[60vh] flex items-center bg-white">
-            <div class="container mx-auto px-6 py-16 text-center">
-                <h1 class="text-4xl md:text-6xl font-bold text-neutral-900 leading-tight">Manuel Mitre</h1>
-                <p class="text-xl md:text-2xl text-blue-600 font-medium mt-4">Bachelor's Degree in International Business and Trade</p>
-                <p class="max-w-3xl mx-auto mt-6 text-neutral-600">
-                    Professional with experience in operations, logistics, data analysis, and commercial management. I seek to contribute to the growth and operational efficiency of a dynamic organization through my experience in strategic planning, process optimization, and team leadership.
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-6xl font-extrabold text-[#00429D]">🛡️ RESCATE DE LA CONFIANZA EN MITRECONECT</h1>
+            <p class="text-xl md:text-2xl font-semibold text-gray-700 mt-4">Plan de Acción de Gobierno Corporativo ante Fraude Reputacional</p>
+            <p class="max-w-3xl mx-auto text-gray-600 mt-4">
+                Esta es una aplicación interactiva que detalla el plan de respuesta de MITRECONECT para abordar las denuncias de fraude,
+                reestructurar la gobernanza y restaurar la confianza de los empleados e inversores a través de acciones decisivas.
+            </p>
+        </header>
+
+        <main>
+            <!-- SECCIÓN 1: ACCIÓN INMEDIATA -->
+            <section class="mb-16">
+                <h2 class="text-3xl font-bold text-center mb-8">🚨 1. PUNTO DE CONTROL INMEDIATO (Respuesta 1.a)</h2>
+                <p class="text-center text-gray-600 max-w-3xl mx-auto mb-10">
+                    Ante la crisis, se requiere una acción inmediata para detener el daño financiero y moral. Estas dos acciones
+                    prioritarias se ejecutan simultáneamente para estabilizar la situación y comenzar la investigación.
                 </p>
-                <div class="mt-8 flex justify-center space-x-4">
-                    <a href="#contact" class="bg-blue-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-blue-700 transition-transform hover:scale-105 shadow-lg">Contact Me</a>
-                    <a href="https://www.linkedin.com/in/mitreortiz/" target="_blank" class="bg-white text-neutral-700 font-bold py-3 px-6 rounded-lg hover:bg-neutral-100 transition-transform hover:scale-105 shadow-lg border border-neutral-200">LinkedIn</a>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Tarjeta de Acción 1 -->
+                    <div class="bg-white p-6 rounded-lg shadow-lg transform transition duration-300 hover:scale-105">
+                        <div class="text-6xl mb-4">💵</div>
+                        <h3 class="text-2xl font-bold text-[#00429D] mb-3">PAGO INMEDIATO Y CONGELACIÓN DE BONOS</h3>
+                        <p class="text-gray-700 mb-4">Utilizar la solvencia real para liquidar *inmediatamente* los sueldos atrasados. Suspender cualquier bono o incentivo variable de la Alta Dirección.</p>
+                        <div class="bg-gray-50 p-4 rounded-md border-l-4 border-gray-300">
+                            <h4 class="font-semibold text-gray-800">Justificación (Deber Fiduciario)</h4>
+                            <p class="text-sm text-gray-600">Demuestra compromiso con el empleado y detiene el posible desvío de recursos mientras se investiga.</p>
+                        </div>
+                    </div>
+                    <!-- Tarjeta de Acción 2 -->
+                    <div class="bg-white p-6 rounded-lg shadow-lg transform transition duration-300 hover:scale-105">
+                        <div class="text-6xl mb-4">🔍</div>
+                        <h3 class="text-2xl font-bold text-[#00429D] mb-3">AUDITORÍA FORENSE EXPRESS</h3>
+                        <p class="text-gray-700 mb-4">Contratación urgente de un auditor externo enfocado en las cuentas por pagar, nóminas y gastos operativos para identificar el desvío.</p>
+                        <div class="bg-gray-50 p-4 rounded-md border-l-4 border-gray-300">
+                            <h4 class="font-semibold text-gray-800">Justificación (Objetividad)</h4>
+                            <p class="text-sm text-gray-600">Asegura la objetividad y rapidez en el diagnóstico del problema real, aislando a los responsables.</p>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </section>
 
-        <section id="experience" class="py-20">
-            <div class="container mx-auto px-6">
-                <h2 class="text-3xl font-bold text-center mb-4">Professional Experience</h2>
-                <p class="text-center text-neutral-600 max-w-2xl mx-auto mb-12">A journey through my professional career, highlighting key roles and responsibilities. Click on each position to see the details.</p>
-                
-                <div class="relative wrap overflow-hidden p-10 h-full">
-                    <div class="border-2-2 absolute border-opacity-20 border-neutral-700 h-full border" style="left: 50%"></div>
-
-                    <div class="mb-8 flex justify-between items-center w-full right-timeline">
-                        <div class="order-1 w-5/12"></div>
-                        <div class="z-20 flex items-center order-1 bg-blue-600 shadow-xl w-8 h-8 rounded-full">
-                            <h1 class="mx-auto font-semibold text-lg text-white">1</h1>
-                        </div>
-                        <div class="order-1 bg-white rounded-lg shadow-xl w-5/12 px-6 py-4 timeline-item cursor-pointer">
-                            <h3 class="font-bold text-neutral-800 text-xl">Operations Analyst</h3>
-                            <p class="text-sm leading-snug tracking-wide text-neutral-500">Coppel | 2022 - Present</p>
-                            <div class="text-neutral-600 mt-3 text-sm hidden details">
-                                <ul class="list-disc pl-5 space-y-1">
-                                    <li>Optimize logistics processes to ensure timely and efficient deliveries.</li>
-                                    <li>Identify trends, patterns, and anomalies in data (SQL, VS Code).</li>
-                                    <li>Collaborate with Last Mile for strategic decision-making.</li>
-                                    <li>Manage indemnities and penalties for KPI non-compliance.</li>
-                                </ul>
-                            </div>
-                        </div>
+                <!-- Visualización Clave 1.a -->
+                <div class="mt-12 bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-2xl font-bold text-center mb-4">Visualización Clave: Focos de Auditoría (Datos Hipotéticos)</h3>
+                    <p class="text-center text-gray-600 max-w-3xl mx-auto mb-6">
+                        El gráfico de dona ilustra las áreas de mayor riesgo donde se centrará la auditoría forense.
+                        Basado en casos similares, los gastos operativos inflados son frecuentemente la principal fuente de fraude.
+                    </p>
+                    <div class="chart-container">
+                        <canvas id="auditChart"></canvas>
                     </div>
-
-                    <div class="mb-8 flex justify-between flex-row-reverse items-center w-full left-timeline">
-                        <div class="order-1 w-5/12"></div>
-                        <div class="z-20 flex items-center order-1 bg-blue-600 shadow-xl w-8 h-8 rounded-full">
-                            <h1 class="mx-auto text-white font-semibold text-lg">2</h1>
-                        </div>
-                        <div class="order-1 bg-white rounded-lg shadow-xl w-5/12 px-6 py-4 timeline-item cursor-pointer">
-                            <h3 class="font-bold text-neutral-800 text-xl">Commercial Coordinator</h3>
-                            <p class="text-sm leading-snug tracking-wide text-neutral-500">Galbo | 2021</p>
-                             <div class="text-neutral-600 mt-3 text-sm hidden details">
-                                <ul class="list-disc pl-5 space-y-1">
-                                    <li>Manage the commercial department and create an external communication plan.</li>
-                                    <li>Identify strategic opportunities to maximize results.</li>
-                                    <li>Coordinate and negotiate terms for service contracting.</li>
-                                    <li>Public relations.</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
+                </div>
+            </section>
+            
+            <!-- SECCIÓN 2: HOJA DE RUTA DE LA REFORMA -->
+            <section class="mb-16">
+                <h2 class="text-3xl font-bold text-center mb-12 mt-16">🛣️ 2. PLAN DE REVISIÓN Y REFORMA ESTRUCTURAL (Respuesta 1.b)</h2>
+                <p class="text-center text-gray-600 max-w-3xl mx-auto mb-10">
+                    Una vez controlada la crisis inmediata, se implementa una hoja de ruta para reestructurar el Gobierno Corporativo
+                    y asegurar que los principios éticos se integren en la toma de decisiones.
+                </p>
+                <div class="relative max-w-4xl mx-auto">
+                    <div class="timeline-line hidden md:block"></div>
                     
-                    <div class="mb-8 flex justify-between items-center w-full right-timeline">
-                        <div class="order-1 w-5/12"></div>
-                        <div class="z-20 flex items-center order-1 bg-blue-600 shadow-xl w-8 h-8 rounded-full">
-                            <h1 class="mx-auto font-semibold text-lg text-white">3</h1>
+                    <!-- Fase I -->
+                    <div class="timeline-item">
+                        <div class="timeline-content">
+                            <span class="text-sm font-semibold text-[#00429D] bg-[#A9D0DE] px-3 py-1 rounded-full">Corto Plazo (0-30 Días)</span>
+                            <h3 class="text-xl font-bold my-2">Fase I: Transparencia y Ética</h3>
+                            <p class="text-gray-700">Comunicación formal del propietario protegiendo a los **denunciantes** y confirmando la solvencia de la empresa para tranquilizar a los empleados.</p>
                         </div>
-                        <div class="order-1 bg-white rounded-lg shadow-xl w-5/12 px-6 py-4 timeline-item cursor-pointer">
-                            <h3 class="font-bold text-neutral-800 text-xl">Account Executive</h3>
-                            <p class="text-sm leading-snug tracking-wide text-neutral-500">HSBC | 2019 - 2021</p>
-                            <div class="text-neutral-600 mt-3 text-sm hidden details">
-                                <ul class="list-disc pl-5 space-y-1">
-                                    <li>Manage and analyze the client portfolio.</li>
-                                    <li>Identify and manage potential credit risks.</li>
-                                    <li>Sell financial products and services.</li>
-                                    <li>Ensure client operations remain within regulations.</li>
-                                </ul>
-                            </div>
+                    </div>
+                    <!-- Fase II -->
+                    <div class="timeline-item">
+                        <div class="timeline-content">
+                            <span class="text-sm font-semibold text-[#00429D] bg-[#A9D0DE] px-3 py-1 rounded-full">Mediano Plazo (30-180 Días)</span>
+                            <h3 class="text-xl font-bold my-2">Fase II: Independencia y Equidad</h3>
+                            <p class="text-gray-700">Reestructurar el **Consejo de Administración** para que la mayoría de sus miembros sean **Consejeros Independientes** y no tengan conflictos de interés.</p>
+                        </div>
+                    </div>
+                    <!-- Fase III -->
+                    <div class="timeline-item">
+                        <div class="timeline-content">
+                            <span class="text-sm font-semibold text-[#00429D] bg-[#A9D0DE] px-3 py-1 rounded-full">Mediano Plazo (30-180 Días)</span>
+                            <h3 class="text-xl font-bold my-2">Fase III: Control y Responsabilidad</h3>
+                            <p class="text-gray-700">Implementar un **Comité de Ética y Auditoría** compuesto *exclusivamente* por los nuevos Consejeros Independientes, dándoles autoridad total de supervisión.</p>
                         </div>
                     </div>
 
-                    <div class="mb-8 flex justify-between flex-row-reverse items-center w-full left-timeline">
-                        <div class="order-1 w-5/12"></div>
-                        <div class="z-20 flex items-center order-1 bg-blue-600 shadow-xl w-8 h-8 rounded-full">
-                            <h1 class="mx-auto text-white font-semibold text-lg">4</h1>
-                        </div>
-                        <div class="order-1 bg-white rounded-lg shadow-xl w-5/12 px-6 py-4 timeline-item cursor-pointer">
-                            <h3 class="font-bold text-neutral-800 text-xl">Administrative Secretary</h3>
-                            <p class="text-sm leading-snug tracking-wide text-neutral-500">UAS | 2014 - 2019</p>
-                            <div class="text-neutral-600 mt-3 text-sm hidden details">
-                                <ul class="list-disc pl-5 space-y-1">
-                                    <li>Responsible for managing the billing cycle.</li>
-                                    <li>Coordinate administrative staff and develop performance reports.</li>
-                                    <li>Manage supplier relations and acquisition of supplies.</li>
-                                    <li>Request, control, and accountability.</li>
-                                </ul>
-                            </div>
-                        </div>
+                </div>
+
+                <!-- Visualización Clave 1.b -->
+                <div class="mt-12 bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-2xl font-bold text-center mb-4">Visualización Clave: Reforma del Consejo (Antes vs. Después)</h3>
+                    <p class="text-center text-gray-600 max-w-3xl mx-auto mb-6">
+                        Este gráfico de barras compara la composición del Consejo de Administración antes y después de la reforma.
+                        El cambio clave es la drástica reducción de consejeros ejecutivos y relacionados, en favor de una mayoría
+                        independiente, lo cual es fundamental para un buen Gobierno Corporativo.
+                    </p>
+                    <div class="chart-container">
+                        <canvas id="boardChart"></canvas>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
-        <section id="skills" class="py-20 bg-white">
-            <div class="container mx-auto px-6">
-                <h2 class="text-3xl font-bold text-center mb-4">Key Skills</h2>
-                 <p class="text-center text-neutral-600 max-w-2xl mx-auto mb-12">A glimpse into my key competencies that drive my professional performance. Hover over the chart to explore my strengths.</p>
-                <div class="chart-container">
-                    <canvas id="skillsChart"></canvas>
-                </div>
-            </div>
-        </section>
-
-        <section id="education" class="py-20">
-            <div class="container mx-auto px-6">
-                <h2 class="text-3xl font-bold text-center mb-12">Education and Courses</h2>
-                <div class="grid md:grid-cols-2 gap-12">
-                    <div class="text-center">
-                        <h3 class="text-2xl font-semibold mb-4">Academic Background</h3>
-                        <div class="space-y-6">
-                            <div class="bg-white p-6 rounded-lg shadow-md">
-                                <h4 class="font-bold text-lg">Master's Degree in Business Management</h4>
-                                <p class="text-neutral-600">Universidad México Internacional</p>
-                                <p class="text-neutral-500 text-sm">2024 - Present</p>
-                            </div>
-                            <div class="bg-white p-6 rounded-lg shadow-md">
-                                <h4 class="font-bold text-lg">Bachelor's Degree in International Business and Trade</h4>
-                                <p class="text-neutral-600">Universidad Autónoma de Sinaloa</p>
-                                <p class="text-neutral-500 text-sm">2012 - 2016</p>
-                            </div>
-                        </div>
+            <!-- SECCIÓN 3: VIGILANCIA PERMANENTE -->
+            <section class="mb-16">
+                <h2 class="text-3xl font-bold text-center mb-12 mt-16">🛰️ 3. MECANISMO DE VIGILANCIA PERMANENTE (Respuesta 1.c)</h2>
+                <p class="text-center text-gray-600 max-w-3xl mx-auto mb-10">
+                    Para prevenir futuras crisis, se establece un sistema de "Doble Vigilancia" que combina el control humano (social)
+                    con el control tecnológico (digital), creando una defensa robusta contra el fraude.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Tarjeta Vigilancia 1 -->
+                    <div class="bg-white p-6 rounded-lg shadow-lg">
+                        <div class="text-6xl mb-4">📣</div>
+                        <h3 class="text-2xl font-bold text-[#00429D] mb-3">CONTROL SOCIAL (Whistleblowing)</h3>
+                        <p class="text-gray-700">Implementación de una **Línea Ética Externa Anónima**, gestionada por un tercero independiente, para que cualquier empleado pueda reportar anomalías sin miedo a represalias.</p>
                     </div>
-                    <div class="text-center">
-                        <h3 class="text-2xl font-semibold mb-4">Certifications and Courses</h3>
-                        <div class="space-y-4">
-                           <div class="bg-white p-4 rounded-lg shadow-sm border-l-4 border-blue-500">
-                               <p class="font-semibold">Diploma in ESG training in the Financial System</p>
-                               <p class="text-sm text-neutral-500">Global Business School HSBC</p>
-                           </div>
-                           <div class="bg-white p-4 rounded-lg shadow-sm border-l-4 border-blue-500">
-                               <p class="font-semibold">Certification in AML/CTF</p>
-                               <p class="text-sm text-neutral-500">HSBC</p>
-                           </div>
-                           <div class="bg-white p-4 rounded-lg shadow-sm border-l-4 border-blue-500">
-                               <p class="font-semibold">15 Indispensable Laws of Leadership</p>
-                               <p class="text-sm text-neutral-500">Botcam Lidera</p>
-                           </div>
-                        </div>
+                    <!-- Tarjeta Vigilancia 2 -->
+                    <div class="bg-white p-6 rounded-lg shadow-lg">
+                        <div class="text-6xl mb-4">🚚</div>
+                        <h3 class="text-2xl font-bold text-[#00429D] mb-3">CONTROL DIGITAL (Logística)</h3>
+                        <p class="text-gray-700">**Auditoría Cruzada de Datos:** Vincular el sistema de flotas (TMS) con el contable para **contrastar automáticamente** gastos (ej. combustible, kilometraje) contra la actividad real de las unidades.</p>
                     </div>
                 </div>
-            </div>
-        </section>
-        
-        <section id="contact" class="py-20 bg-neutral-800 text-white">
-            <div class="container mx-auto px-6 text-center">
-                <h2 class="text-3xl font-bold mb-4">Interested in collaborating?</h2>
-                <p class="max-w-2xl mx-auto mb-8">I am available for new opportunities. Feel free to contact me.</p>
-                <div class="flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0 md:space-x-8">
-                    <a href="mailto:mitreorliz@omall.com" class="text-lg hover:text-blue-400 transition-colors">mitreorliz@omall.com</a>
-                    <span class="hidden md:block">|</span>
-                    <p class="text-lg">Tel: 6672-20-55-17</p>
-                    <span class="hidden md:block">|</span>
-                    <a href="https://www.linkedin.com/in/mitreortiz/" target="_blank" class="text-lg hover:text-blue-400 transition-colors">LinkedIn</a>
-                </div>
-            </div>
-        </section>
-    </main>
 
-    <footer class="bg-white py-4">
-        <div class="container mx-auto px-6 text-center text-sm text-neutral-500">
-            <p>&copy; 2024 Manuel Mitre. Interactively designed and developed.</p>
-        </div>
-    </footer>
+                <div class="mt-8 bg-white p-6 rounded-lg shadow-lg border-t-4 border-[#F97316]">
+                    <h3 class="text-2xl font-bold text-[#00429D] mb-3 text-center">Justificación de la Doble Vigilancia</h3>
+                    <p class="text-gray-700 text-center text-lg max-w-3xl mx-auto">
+                        La combinación de ambos es la mejor defensa: la **vigilancia social** detecta la falta de ética,
+                        mientras que el **control digital** previene la manipulación de datos financieros basados en operaciones logísticas falsas.
+                    </p>
+                </div>
+
+                <!-- Visualización Clave 1.c -->
+                <div class="mt-12 bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-2xl font-bold text-center mb-4">Visualización Clave: Impacto Proyectado de la Vigilancia</h3>
+                    <p class="text-center text-gray-600 max-w-3xl mx-auto mb-6">
+                        Este gráfico de líneas proyecta cómo la implementación de la línea ética (aumentando los reportes procesados)
+                        impactará directamente en la reducción de las pérdidas financieras por fraude, demostrando el retorno de la inversión (ROI) de la transparencia.
+                    </p>
+                    <div class="chart-container">
+                        <canvas id="vigilanceChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <footer class="mt-16 text-center text-gray-500 text-sm">
+            <p>Infografía SPA creada con HTML, Tailwind CSS y Chart.js. Ni Mermaid JS ni SVG fueron utilizados.</p>
+        </footer>
+    </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const mobileMenuButton = document.getElementById('mobile-menu-button');
-            const mobileMenu = document.getElementById('mobile-menu');
-            
-            mobileMenuButton.addEventListener('click', function() {
-                mobileMenu.classList.toggle('hidden');
-            });
-            
-            const menuLinks = mobileMenu.querySelectorAll('a');
-            menuLinks.forEach(link => {
-                link.addEventListener('click', () => {
-                    mobileMenu.classList.add('hidden');
-                });
-            });
+        function getTooltipTitle(tooltipItems) {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+                return label.join(' ');
+            } else {
+                return label;
+            }
+        }
 
-            const timelineItems = document.querySelectorAll('.timeline-item');
-            timelineItems.forEach(item => {
-                item.addEventListener('click', () => {
-                    const details = item.querySelector('.details');
-                    details.classList.toggle('hidden');
-                });
-            });
-            
-            const ctx = document.getElementById('skillsChart').getContext('2d');
-            const skillsChart = new Chart(ctx, {
-                type: 'radar',
-                data: {
-                    labels: ['Adaptability', 'Leadership', 'Pressure Tolerance', 'Business Development', 'Competitiveness', 'Data Analysis'],
-                    datasets: [{
-                        label: 'Key Competencies',
-                        data: [5, 5, 5, 5, 5, 5],
-                        backgroundColor: 'rgba(74, 144, 226, 0.2)',
-                        borderColor: 'rgba(74, 144, 226, 1)',
-                        borderWidth: 2,
-                        pointBackgroundColor: 'rgba(74, 144, 226, 1)',
-                        pointBorderColor: '#fff',
-                        pointHoverBackgroundColor: '#fff',
-                        pointHoverBorderColor: 'rgba(74, 144, 226, 1)'
-                    }]
-                },
-                options: {
-                    maintainAspectRatio: false,
-                    responsive: true,
-                    scales: {
-                        r: {
-                            angleLines: {
-                                color: 'rgba(0, 0, 0, 0.1)'
-                            },
-                            grid: {
-                                color: 'rgba(0, 0, 0, 0.1)'
-                            },
-                            pointLabels: {
-                                font: {
-                                    size: 12,
-                                    weight: 'bold'
-                                },
-                                color: '#333'
-                            },
-                            ticks: {
-                                backdropColor: 'transparent',
-                                display: false,
-                                stepSize: 1
-                            },
-                            suggestedMin: 0,
-                            suggestedMax: 5
-                        }
-                    },
-                    plugins: {
-                        legend: {
-                            display: false
-                        }
+        const commonTooltipOptions = {
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        title: getTooltipTitle
                     }
                 }
-            });
+            }
+        };
+        
+        const auditCtx = document.getElementById('auditChart').getContext('2d');
+        new Chart(auditCtx, {
+            type: 'doughnut',
+            data: {
+                labels: [['Gastos Operativos', 'Inflados'], ['Bonos No', 'Autorizados'], ['Nómina Fantasma'], ['Otros Desvíos']],
+                datasets: [{
+                    label: 'Focos de Auditoría',
+                    data: [45, 25, 20, 10],
+                    backgroundColor: ['#00429D', '#4771B2', '#F97316', '#A9D0DE'],
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    title: {
+                        display: false,
+                        text: 'Focos de Auditoría (Hipotético)'
+                    },
+                    tooltip: commonTooltipOptions.plugins.tooltip
+                }
+            }
+        });
+
+        const boardCtx = document.getElementById('boardChart').getContext('2d');
+        new Chart(boardCtx, {
+            type: 'bar',
+            data: {
+                labels: [
+                    ['Consejeros', 'Ejecutivos'], 
+                    ['Consejeros', 'Independientes'], 
+                    ['Consejeros', 'Relacionados']
+                ],
+                datasets: [
+                    {
+                        label: 'Antes de la Reforma',
+                        data: [5, 2, 3],
+                        backgroundColor: '#F97316',
+                        borderColor: '#F97316',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Después de la Reforma',
+                        data: [3, 7, 1],
+                        backgroundColor: '#00429D',
+                        borderColor: '#00429D',
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Número de Miembros'
+                        }
+                    }
+                },
+                plugins: {
+                    title: {
+                        display: false,
+                        text: 'Composición del Consejo de Administración'
+                    },
+                    tooltip: commonTooltipOptions.plugins.tooltip
+                }
+            }
+        });
+
+        const vigilanceCtx = document.getElementById('vigilanceChart').getContext('2d');
+        new Chart(vigilanceCtx, {
+            type: 'line',
+            data: {
+                labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun'],
+                datasets: [
+                    {
+                        label: 'Reportes en Línea Ética',
+                        data: [5, 8, 15, 25, 22, 18],
+                        borderColor: '#00429D',
+                        backgroundColor: 'rgba(0, 66, 157, 0.1)',
+                        fill: true,
+                        tension: 0.3,
+                        yAxisID: 'y'
+                    },
+                    {
+                        label: 'Pérdidas por Fraude (Miles USD)',
+                        data: [50, 45, 30, 15, 10, 5],
+                        borderColor: '#F97316',
+                        backgroundColor: 'rgba(249, 115, 22, 0.1)',
+                        fill: true,
+                        tension: 0.3,
+                        yAxisID: 'y1'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {
+                    mode: 'index',
+                    intersect: false,
+                },
+                scales: {
+                    y: {
+                        type: 'linear',
+                        display: true,
+                        position: 'left',
+                        title: {
+                            display: true,
+                            text: 'Número de Reportes'
+                        }
+                    },
+                    y1: {
+                        type: 'linear',
+                        display: true,
+                        position: 'right',
+                        title: {
+                            display: true,
+                            text: 'Pérdidas (Miles USD)'
+                        },
+                        grid: {
+                            drawOnChartArea: false,
+                        },
+                    }
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Impacto Proyectado de la Vigilancia'
+                    },
+                    tooltip: commonTooltipOptions.plugins.tooltip
+                }
+            }
         });
     </script>
+
 </body>
 </html>
